@@ -2,7 +2,7 @@
 import socket
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server.bind((socket.gethostname(), 1234))
+server.bind(("", 1234))
 server.listen()
 addr = ""
 

