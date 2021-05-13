@@ -15,4 +15,4 @@ while True:
         print(f"Connection from {addr} has been made.")
 
     msg = client.recv(64).decode("utf-8")
-    print(msg)
+    print(msg, end="", flush=True)
