@@ -1,4 +1,10 @@
 #!/usr/bin/env python3
+"""
+Usage: ./client.py <ip>
+* ./client.py localhost
+* ./client.py 192.168.0.103
+"""
+
 import sys
 import socket
 import pynput
