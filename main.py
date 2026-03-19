@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 import os
 from datetime import datetime
-import pynput
-from pynput.keyboard import Key, Listener
+from pynput.keyboard import Listener
 
 # Directory to store logs
 if not os.path.exists("data"):
