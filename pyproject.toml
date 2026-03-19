@@ -7,4 +7,5 @@ requires-python = ">=3.13"
 dependencies = [
     "pynput>=1.8.1",
     "python-dotenv>=1.2.2",
+    "resend>=2.25.0",
 ]
